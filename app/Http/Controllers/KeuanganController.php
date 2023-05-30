@@ -27,7 +27,10 @@ class KeuanganController extends Controller
                 'isi_laporan' => json_encode($current_month_data),
             ]);
         }
-        return redirect('keuangan');
+        return view('keuangan', [
+            'title' => 'Laporan Keuangan',
+            'data' => Keuangan::all(),
+        ]);
 
     }
 }

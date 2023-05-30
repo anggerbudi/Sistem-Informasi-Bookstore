@@ -30,49 +30,23 @@ class PegawaiController extends Controller
                 $counter += 1;
             }
         }
-        User::create([
-            'id' => $counter,
-            'name' => $_POST['name_akun'],
-            'email' => $_POST['email_akun'],
-            'password' => $_POST['password_akun'],
-            'foto' => strtolower(str_replace(' ', '_', $_POST['name_akun'])),
-        ]);
+        if (!User::where('email', $_POST['email_akun'])->exists()){
+            User::create([
+                'id' => $counter,
+                'name' => $_POST['name_akun'],
+                'email' => $_POST['email_akun'],
+                'password' => $_POST['password_akun'],
+                'foto' => strtolower(str_replace(' ', '_', $_POST['name_akun'])),
+            ]);
+        } else {
+            return redirect()->back()->withErrors(['tambah_akun', 'Akun dengan email tersebut sudah tersedia!']);
+        }
         return redirect('pegawai');
     }
-
-//    public function edit_profil()
-//    {
-////        $pegawai = User::where('email', 'AnggerBudi@gmail.com')->get();
-//        $pegawai = User::where('email', Auth::user()->email)->get();
-//        $password_lama_akun = bcrypt($_POST['password_lama_akun']);
-//        if ($_POST['password_baru_akun'].isset()) {
-//            dd(bcrypt($_POST['password_lama_akun']));
-//            if ($pegawai[0]['password'] == bcrypt($_POST['password_lama_akun'])){
-//            dd('pw lama');
-//                if ($_POST['password_baru_akun'] == $_POST['password_baru2_akun']) {
-//                    $pegawai->update([
-//                        'password' => $_POST['new_password'],
-//                    ]);
-//                } else {
-//                    return redirect()->withErrors(['password', 'Password baru tidak sama']);
-//                }
-//            } else {
-//                return redirect()->withErrors(['password', 'Password lama invalid']);
-//            }
-//        }
-//        $pegawai->update([
-//           'email' => $_POST['new_email'],
-//        ]);
-//        return redirect(url()->previous());
-//    }
-
-    public function edit_profil(Request $request)
+    public function edit_profil()
     {
         if(isset($_POST['password_baru_akun'])) {
-//            dd('hello');
-//            dd(bcrypt($_POST['password_lama_akun']));
             if (Hash::check($_POST['password_lama_akun'], Auth::user()->password)) {
-//                dd('yeay');
                 if ($_POST['password_baru_akun'] == $_POST['password_baru2_akun']) {
                     User::where('id', Auth::id())->update([
                         'password' => bcrypt($_POST['password_baru_akun']),
@@ -84,9 +58,15 @@ class PegawaiController extends Controller
                 return redirect()->back()->withErrors(['Password', 'Password lama tidak sesuai']);
             }
         }
-        User::where('id', Auth::id())->update([
-            'email' => $_POST['email_akun'],
-        ]);
+        if (Auth::user()->email != $_POST['email_akun']){
+            if (!User::where('email', $_POST['email_akun'])) {
+                Auth::user()->update([
+                    'email' => $_POST['email_akun'],
+                ]);
+            } else {
+                return redirect()->back()->withErrors(['Email', 'Sudah ada akun yang menggunakan air tersebut']);
+            }
+        }
         return redirect(url()->previous());
     }
 

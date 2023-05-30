@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('body')
+@section('main')
 
     <h1 class="text-center">Halaman Laporan Keuangan</h1>
     <div class="container">

@@ -31,13 +31,13 @@
                         <form action="/login" method="post">
                             @csrf
                             <div class="form-floating w-75 me-auto ms-auto">
-                                <input type="email" name="email" class="form-control"
+                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
                                        id="email" placeholder="pegawai@kantor.com" autofocus required
                                        value="{{ old('email') }}">
                                 <label for=email>Email address</label>
-                                @if($errors->has('login'))
+                                @if(session()->has('login_error'))
                                     <div class="alert alert-danger">
-                                        {{ $errors->first('login') }}
+                                        {{ $errors->first('login_error') }}
                                     </div>
                                 @endif
                             </div>
@@ -54,7 +54,8 @@
                 @endguest
                 @auth()
                     <div class="">
-                        <img src="{{asset('images/profile/angger.jpg')}}" alt="profil" class="card-img-top rounded-circle"
+                        <img src="{{asset('images/profile/angger.jpg')}}" alt="profil"
+                             class="card-img-top rounded-circle"
                              style="object-fit: cover; object-position: center; width: 150px; height: 150px; margin-left: 50%; transform: translate(-49%, 0%)">
                     </div>
                     <div class="modal-body">
@@ -114,7 +115,8 @@
                             <a class="nav-link" href="/test">Test</a>
                         </li>
                     </ul>
-                        <!-- Modal -->
+                    <!-- Modal -->
+                    <div class="modalProfil">
                         <div class="modal fade" id="popUpFormProfil" tabindex="-1"
                              aria-labelledby="popupFormLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -162,7 +164,8 @@
                                                 >
                                             </div>
                                             <div class="mb-3">
-                                                <label for="password_baru2_akun" class="form-label">Masukkan kembali Password Baru</label>
+                                                <label for="password_baru2_akun" class="form-label">Masukkan kembali
+                                                    Password Baru</label>
                                                 <input type="password" class="form-control"
                                                        id="password_baru2_akun"
                                                        name="password_baru2_akun"
@@ -181,11 +184,12 @@
                                 </div>
                             </div>
                         </div>
-                        <style>
-                            .modal-open .navbar {
-                                z-index: 1100;
-                            }
-                        </style>
+                    </div>
+                    <style>
+                        .modal-open .navbar {
+                            z-index: 1051;
+                        }
+                    </style>
                 @endauth
             </div>
         </div>
