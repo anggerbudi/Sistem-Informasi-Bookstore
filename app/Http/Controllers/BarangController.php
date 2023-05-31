@@ -48,4 +48,11 @@ class BarangController extends Controller
         Barang::where('kode_barang', $kode)->delete();
         return redirect('barang');
     }
+
+    public function ambil()
+    {
+        $data = Barang::all(); // Replace "YourModel" with the actual model name
+
+        return response()->json($data);
+    }
 }
