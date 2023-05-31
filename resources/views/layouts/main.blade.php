@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.min.css')}}">
     <script src="{{asset('bootstrap/js/popper.min.js')}}"></script>
     <script src="{{asset('bootstrap/js/bootstrap.min.js')}}"></script>
-    @if($title == 'Kelola Barang' || $title == 'Kelola Pegawai' || $title == 'Laporan Keuangan')
+    @if($title == 'Kelola Barang' || $title == 'Kelola Pegawai' || $title == 'Laporan Keuangan' || $title == 'Halaman Transaksi')
         <link rel="stylesheet" href="{{asset('dataTables/css/dataTables.bootstrap5.min.css')}}">
         <script defer src="{{asset('dataTables/js/jquery-3.5.1.js')}}"></script>
         <script defer src="{{asset('dataTables/js/jquery.dataTables.min.js')}}"></script>

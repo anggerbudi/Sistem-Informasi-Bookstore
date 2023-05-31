@@ -65,7 +65,8 @@
                 <th>Kode</th>
                 <th>Nama</th>
                 <th>Harga</th>
-                <th colspan="2">Stock</th>
+                <th>Stock</th>
+                <td>Edit Stock</td>
                 <th>Edit</th>
                 <th>Hapus</th>
             </tr> <!-- Table Header -->

@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->json('daftar_barang');
             $table->json('daftar_harga');
             $table->double('total_harga');
+            $table->double('total_belanja');
             $table->timestamps();
         });
     }
