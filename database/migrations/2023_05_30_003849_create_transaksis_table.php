@@ -12,8 +12,10 @@ return new class extends Migration {
             $table->string('nama_kasir');
             $table->json('daftar_barang');
             $table->json('daftar_harga');
+            $table->json('daftar_jumlah');
             $table->double('total_harga');
-            $table->double('total_belanja');
+            $table->double('bayar');
+            $table->double('kembalian');
             $table->timestamps();
         });
     }

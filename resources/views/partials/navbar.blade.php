@@ -17,7 +17,14 @@
                     <h5 class="offcanvas-title me-auto ms-auto" id="offcanvasNavbarLabel"> &ensp; Guest</h5>
                 @endguest
                 @auth()
-                    <h5 class="offcanvas-title me-auto ms-auto" id="offcanvasNavbarLabel"> &ensp; Profile</h5>
+                    <div class="logoutContainer">
+                        <form action="/logout" method="post" class="mt-auto mb-auto" style="padding-top: 7px">
+                            @csrf
+                            <input type="image" src="{{asset('images/svg/box-arrow-left.svg')}}" width="27"
+                                   value="Logout" alt="logout">
+                        </form>
+                    </div>
+                    <h5 class="offcanvas-title me-auto ms-auto" id="offcanvasNavbarLabel">Profile</h5>
                 @endauth
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
@@ -31,7 +38,8 @@
                         <form action="/login" method="post">
                             @csrf
                             <div class="form-floating w-75 me-auto ms-auto">
-                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                                <input type="email" name="email"
+                                       class="form-control @error('email') is-invalid @enderror"
                                        id="email" placeholder="pegawai@kantor.com" autofocus required
                                        value="{{ old('email') }}">
                                 <label for=email>Email address</label>
@@ -79,16 +87,12 @@
                                 <th>
 
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-light mb-2 mt-1" data-bs-toggle="modal"
                                             data-bs-target="#popUpFormProfil">
-                                        Edit Barang
+                                        Edit Profil
                                     </button>
 
 
-                                    <form action="/logout" method="post">
-                                        @csrf
-                                        <input type="submit" class="btn btn-danger me-auto ms-auto" value="Logout">
-                                    </form>
                                 </th>
                             </tr>
                         </table>
@@ -97,22 +101,22 @@
 
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/transaksi">Transaksi</a>
+                            <a class="nav-link @if(isset($state)) @if($state==='transaksi') {{'active'}} @endif @endif" aria-current="page" href="/transaksi">Transaksi</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/barang">Kelola Barang</a>
+                            <a class="nav-link @if(isset($state)) @if($state==='barang') {{'active'}} @endif @endif" href="/barang">Kelola Barang</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/pegawai">Kelola Pegawai</a>
+                            <a class="nav-link @if(isset($state)) @if($state==='pegawai') {{'active'}} @endif @endif" href="/pegawai">Kelola Pegawai</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/keuangan">Laporan Keuangan</a>
+                            <a class="nav-link @if(isset($state)) @if($state==='keuangan') {{'active'}} @endif @endif" href="/keuangan">Laporan Keuangan</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/sandbox">Sandbox</a>
+                            <a class="nav-link @if(isset($state)) @if($state==='sandbox') {{'active'}} @endif @endif" href="/sandbox">Sandbox</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/test">Test</a>
+                            <a class="nav-link @if(isset($state)) @if($state==='test') {{'active'}} @endif @endif" href="/test">Test</a>
                         </li>
                     </ul>
                     <!-- Modal -->

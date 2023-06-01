@@ -3,15 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
-use Illuminate\Http\Request;
 
 class BarangController extends Controller
 {
-    //
+    private static string $state;
+    private static string $title;
+
+    public function __construct()
+    {
+        self::$state = 'barang';
+        self::$title = 'Kelola Barang';
+    }
+
     public function index()
     {
         return view('barang', [
-            'title' => 'Kelola Barang',
+            'title' => self::$title,
+            'state' => self::$state,
             'data' => Barang::all(),
         ]);
     }
@@ -19,8 +27,8 @@ class BarangController extends Controller
     public function edit($kode)
     {
         Barang::where('kode_barang', '=', $kode)->update([
-            'nama_barang' => $_POST['nama_barang'.$kode],
-            'harga_barang' => $_POST['harga_barang'.$kode],
+            'nama_barang' => $_POST['nama_barang' . $kode],
+            'harga_barang' => $_POST['harga_barang' . $kode],
         ]);
         return redirect('barang');
     }
@@ -28,7 +36,7 @@ class BarangController extends Controller
     public function stock($kode)
     {
         Barang::where('kode_barang', $kode)->update([
-            'stock_barang' => $_POST['tambah'.$kode],
+            'stock_barang' => $_POST['tambah' . $kode],
         ]);
         return redirect('barang');
     }
@@ -49,10 +57,4 @@ class BarangController extends Controller
         return redirect('barang');
     }
 
-    public function ambil()
-    {
-        $data = Barang::all(); // Replace "YourModel" with the actual model name
-
-        return response()->json($data);
-    }
 }

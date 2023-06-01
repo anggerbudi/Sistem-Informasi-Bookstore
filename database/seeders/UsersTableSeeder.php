@@ -11,7 +11,7 @@ class UsersTableSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'id' => 23000,
+                'id' => 50000,
                 'name' => 'Martinus Angger',
                 'email' => 'AnggerBudi@gmail.com',
                 'password' => bcrypt('Angger'),
@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
                 'foto' => 'angger',
             ],
             [
-                'id' => 22000,
+                'id' => 60000,
                 'name' => 'Antonius Yoga',
                 'email' => 'AntoniusYoga@gmail.com',
                 'password' => bcrypt('Antonius'),

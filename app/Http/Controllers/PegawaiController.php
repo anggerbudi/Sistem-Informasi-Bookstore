@@ -11,11 +11,20 @@ use Illuminate\Http\Request;
 class PegawaiController extends Controller
 {
     //
+
+    private static $state;
+
+    public function __construct()
+    {
+        self::$state = 'pegawai';
+    }
+
     public function index()
     {
         return view('pegawai', [
             'title' => 'Kelola Pegawai',
             'data' => User::where('akses', 'kasir')->get(),
+            'state' => self::$state
         ]);
     }
 
