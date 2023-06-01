@@ -210,11 +210,11 @@
                         aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="formBayar" method="post" action="/transaksi/bayar/{{$tgl}}/{{$url}}">
+                <form id="formBayar" method="post" onsubmit="handleFormSubmit(event)" action="/transaksi/bayar/{{$tgl}}/{{$url}}">
                     @csrf <!-- {{ csrf_field() }} -->
                     <div class="mb-3">
                         <label for="hargaTotal">Total Harga : </label>
-                        <input type="number" name="hargaTotal" id="hargaTotal" class="form-control" readonly value="<?php $total = 0;foreach ($data as $barang){ $total += $barang['total_harga'];} echo $total;?>">
+                        <input type="number" name="hargaTotal" id="hargaTotal" class="form-control" readonly value="<?php $total = 0;foreach($data as $barang){ $total += $barang['total_harga'];} echo $total;?>">
 
                         <hr>
                         <label for="uang_bayar"
@@ -226,6 +226,25 @@
                     </div>
                 </form>
             </div>
+            <script>
+                function handleFormSubmit(event) {
+                    event.preventDefault(); // Prevents the form from submitting normally
+
+                    // Perform desired actions with the form data
+                    // Example: Get form values
+                    const a = 'asd';
+                    var uang = parseInt(document.getElementById('uang_bayar').value);
+                    var total = parseInt(document.getElementById('hargaTotal').value);
+                    var kembalian = uang - total;
+                    // Perform further actions (e.g., validation, processing, etc.)
+                    // Example: Display form values in an alert
+                    if (uang>total){
+                        alert(`Kembalian ${kembalian}`);
+                    } else {
+                        alert('uang kurang');
+                    }
+                }
+            </script>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
                 </button>
