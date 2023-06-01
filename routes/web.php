@@ -45,4 +45,3 @@ Route::post('/pegawai/hapus{id}', [PegawaiController::class, 'hapus'])->middlewa
 Route::post('/pegawai/edit{id}', [PegawaiController::class, 'edit_profil'])->middleware('auth');
 
 Route::get('/keuangan', [KeuanganController::class, 'index'])->middleware('auth');
-Route::get('/ambil', [BarangController::class, 'ambil'])->middleware('auth');;

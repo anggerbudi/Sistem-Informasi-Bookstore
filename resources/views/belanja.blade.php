@@ -48,7 +48,7 @@
                     <script>
                         const name_akun = document.getElementById('name_akun');
                         const suggestionList = document.getElementById('suggestions');
-                        const suggestions = @json(   $array_nama_barang);
+                        const suggestions = @json($array_nama_barang);
                         console.log(suggestions);
                         // Event listener for input changes in the search bar
                         name_akun.addEventListener('input', () => {
@@ -126,8 +126,9 @@
                     <td width="25%">
                         <form action="/transaksi/editJumlah/{{$tgl}}/{{$url}}/{{$kasir['kode_barang']}}" method="post">
                             @csrf
-                            <input type="number" class="form-control" name="edit_jumlah{{$kasir['kode_barang']}}" id="edit_jumlah{{$kasir['kode_barang']}}" value="{{$kasir['jumlah_barang']}}"style="width: 100px; display: inline-block">
-                            <input for="edit_jumlah{{$kasir['kode_barang']}}" type="submit" value="Edit" class="form-control" style="width: 50px; display: inline-block">
+                            <label for="edit_jumlah{{$kasir['kode_barang']}}"></label>
+                            <input type="number" class="form-control" name="edit_jumlah{{$kasir['kode_barang']}}" id="edit_jumlah{{$kasir['kode_barang']}}" value="{{$kasir['jumlah_barang']}}" style="width: 100px; display: inline-block">
+                            <input {{--for="edit_jumlah{{$kasir['kode_barang']}}"--}} type="submit" value="Edit" class="form-control" style="width: 50px; display: inline-block">
                         </form>
                     </td>
                     <td>{{$kasir['total_harga']}}</td>
@@ -195,7 +196,7 @@
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-light" data-bs-toggle="modal"
         data-bs-target="#popUpBayar" style="position: fixed;bottom: 100px;right: 100px;">
-    Bayar Cok
+    Bayar
 </button>
 
 <!-- Modal -->
@@ -210,12 +211,22 @@
                         aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="formBayar" method="post" onsubmit="handleFormSubmit(event)" action="/transaksi/bayar/{{$tgl}}/{{$url}}">
+                <?php
+                    $hargaTotal = 0;
+                    if (isset($url)) {
+                        $currentData = json_decode(Crypt::decryptString($url));
+                        foreach ($currentData as $harga) {
+                            $hargaTotal += $harga->harga_barang * $harga->jumlah_barang;
+                        }
+                    }
+                    $uangBayar = intval(request('uang_bayar'));
+                ?>
+                <form id="formBayar" method="post" action="/transaksi/bayar/{{$tgl}}/{{$url}}">
                     @csrf <!-- {{ csrf_field() }} -->
                     <div class="mb-3">
                         <label for="hargaTotal">Total Harga : </label>
-                        <input type="number" name="hargaTotal" id="hargaTotal" class="form-control" readonly value="<?php $total = 0;foreach($data as $barang){ $total += $barang['total_harga'];} echo $total;?>">
-
+                        <input type="number" name="hargaTotal" id="hargaTotal" class="form-control" readonly
+                               value="{{$hargaTotal}}">
                         <hr>
                         <label for="uang_bayar"
                                class="form-label">Nominal</label>
@@ -226,33 +237,98 @@
                     </div>
                 </form>
             </div>
-            <script>
-                function handleFormSubmit(event) {
-                    event.preventDefault(); // Prevents the form from submitting normally
-
-                    // Perform desired actions with the form data
-                    // Example: Get form values
-                    const a = 'asd';
-                    var uang = parseInt(document.getElementById('uang_bayar').value);
-                    var total = parseInt(document.getElementById('hargaTotal').value);
-                    var kembalian = uang - total;
-                    // Perform further actions (e.g., validation, processing, etc.)
-                    // Example: Display form values in an alert
-                    if (uang>total){
-                        alert(`Kembalian ${kembalian}`);
-                    } else {
-                        alert('uang kurang');
-                    }
-                }
-            </script>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
                 </button>
-                <button type="submit" form="formBayar"
-                        class="btn btn-warning">Submit
+                <button type="button" id="myButton" class="btn btn-warning" data-bs-toggle="modal"
+                >Bayar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var button = document.getElementById("myButton");
+
+    button.addEventListener("click", function() {
+        var uang1 = document.getElementById('uang_bayar').value;
+        var uang = parseInt(document.getElementById('uang_bayar').value);
+        var total = parseInt(document.getElementById('hargaTotal').value);
+        var kembalian = uang - total;
+        // Perform further actions (e.g., validation, processing, etc.)
+        // Example: Display form values in an alert
+        if (uang<total || uang1 == ""){
+            var myModalKurang = new bootstrap.Modal(document.getElementById('popUpKurang'));
+            myModalKurang.show();
+        } else {
+            var myModalBayar = new bootstrap.Modal(document.getElementById('popUpKonfirmasi'));
+            document.getElementById('uang_pembayar').value = uang;
+            document.getElementById('total_harga').value = total;
+            document.getElementById('kembalian').value = kembalian;
+            myModalBayar.show();
+        }
+    });
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="popUpKonfirmasi" tabindex="-1"
+     aria-labelledby="popupFormLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="popupFormLabel{{--{{$item['id']}}--}}">
+                    Konfirmasi Bayar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formKonfirmasi" method="post" action="/transaksi/bayar/{{$tgl}}/{{$url}}">
+                    @csrf <!-- {{ csrf_field() }} -->
+                <label for="uang_pembayar">Uang Pembeli : </label>
+                <br>
+                <input type="text" readonly name="uang_pembayar" id="uang_pembayar">
+                <br>
+                <br>
+                <label for="total_harga">Total Belanja : </label>
+                <br>
+                <input type="text" readonly name="total_harga" id="total_harga">
+                <br>
+                <br>
+                <label for="kembalian">Kembalian : </label>
+                <br>
+                <input type="text" readonly name="kembalian" id="kembalian">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                </button>
+                <button type="submit" form="formKonfirmasi"
+                        class="btn btn-warning">Bayar
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="popUpKurang" tabindex="-1"
+     aria-labelledby="popupFormLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="popupFormLabel{{--{{$item['id']}}--}}">
+                    Konfirmasi Kurang</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                UANG KURANG
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
