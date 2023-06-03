@@ -11,6 +11,9 @@ class Transaksi extends Model
         'nama_kasir',
         'daftar_barang',
         'daftar_harga',
+        'daftar_jumlah',
+        'bayar',
+        'kembalian',
         'total_harga',
     ];
 
@@ -18,4 +21,6 @@ class Transaksi extends Model
         'daftar_barang' => 'array',
         'daftar_harga' => 'array',
     ];
+
+
 }

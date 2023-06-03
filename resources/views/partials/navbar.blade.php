@@ -1,8 +1,7 @@
-<nav class="navbar bg-body-tertiary fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/dashboard">
-            <img src="{{asset('images/logo.jpg')}}" alt="logo" width="30" class="d-inline-block align-text-top">
-            Bookstore
+<nav class="navbar bg-body-tertiary fixed-top" style="background-color: #2f4f4f;box-shadow: 0 4px 8px 0 rgba(0,0,0,.2)">
+    <div class="container-fluid" >
+        <a class="navbar-brand" href="/dashboard" style="margin-left:auto;margin-right:auto">
+            <h4 style="font-stretch:expanded;font-family: vogue,sans-serif;font-weight: 300">SISTEM INFORMASI TOKO BUKU GULLIVER</h4>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">

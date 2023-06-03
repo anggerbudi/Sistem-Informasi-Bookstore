@@ -1,11 +1,29 @@
 @extends('layouts.main')
 
+<style>
+    .text-center{
+        font-family: itc-avant-garde-gothic-std-book;
+        font-size: 20px;
+        color:white;
+        margin-top: 15px;
+
+    }
+
+    tr{
+        background-color: black;
+    }
+
+    p{
+        font-family:itc-avant-garde-gothic-std-book;
+    }
+</style>
+
 @section('main')
-    <h1 class="text-center"> Halaman Kelola Barang</h1>
+    <p class="text-center"> HALAMAN KELOLA BARANG</p>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-light" data-bs-toggle="modal"
             data-bs-target="#popUpTambahBarang">
-        Tambah Barang
+        <p>Tambah Barang</p>
     </button>
 
     <!-- Modal -->

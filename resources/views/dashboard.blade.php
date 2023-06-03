@@ -1,5 +1,12 @@
 @extends('layouts.main')
-
+<style>
+    .container img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        pointer-events: none;
+    }
+</style>
 @section('main')
 
     @guest()
@@ -12,18 +19,9 @@
     @endguest
 
     @auth()
-    <div class="text-center text-capitalize">
-        <h1>
-            <br>
-            <br>
-            <br>
-            KERJA KERJA KERJA
-            <br>
-            <br>
-            <br>
-            Kerja Pangkal Kaya
-        </h1>
-    </div>
+        <div class="container">
+            <img src="images/logo.png" alt="" >
+        </div>
     @endauth
 
 @endsection
