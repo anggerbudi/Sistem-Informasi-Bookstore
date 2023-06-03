@@ -1,7 +1,8 @@
 <nav class="navbar bg-body-tertiary fixed-top" style="background-color: #2f4f4f;box-shadow: 0 4px 8px 0 rgba(0,0,0,.2)">
-    <div class="container-fluid" >
+    <div class="container-fluid">
         <a class="navbar-brand" href="/dashboard" style="margin-left:auto;margin-right:auto">
-            <h4 style="font-stretch:expanded;font-family: vogue,sans-serif;font-weight: 300">SISTEM INFORMASI TOKO BUKU GULLIVER</h4>
+            <h4 style="font-stretch:expanded;font-family: vogue,sans-serif;font-weight: 300">SISTEM INFORMASI TOKO BUKU
+                GULLIVER</h4>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -23,7 +24,7 @@
                                    value="Logout" alt="logout">
                         </form>
                     </div>
-                    <h5 class="offcanvas-title me-auto ms-auto" id="offcanvasNavbarLabel">Profile</h5>
+                    <h5 class="offcanvas-title me-auto ms-auto" id="offcanvasNavbarLabel" style="font-family: itc-avant-garde-gothic-std-book, serif;color: white">PROFIL</h5>
                 @endauth
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
@@ -41,7 +42,7 @@
                                        class="form-control @error('email') is-invalid @enderror"
                                        id="email" placeholder="pegawai@kantor.com" autofocus required
                                        value="{{ old('email') }}">
-                                <label for=email>Email address</label>
+                                <label for=email>Email Address</label>
                                 @if(session()->has('login_error'))
                                     <div class="alert alert-danger">
                                         {{ $errors->first('login_error') }}
@@ -60,13 +61,52 @@
                     </div>
                 @endguest
                 @auth()
-                    <div class="">
+                    <style>
+                        .wrap:after{
+                            font-family: 'Font Awesome 5 Free';
+                            font-weight: 900;
+                            content: "\f044";
+                            position: absolute;
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 50%;
+                            border: 1px solid grey;
+                            top: 0;
+                            right: 113px;
+                            background: white;
+                            color: black;
+                            align-items: center;
+                            display: flex;
+                            justify-content: center;
+                            cursor:pointer;
+                        }
+
+                        li.nav-item{
+                            padding-top: 10px;
+                            padding-bottom: 10px;
+                            border-radius: 7px;
+                        }
+                        li.nav-item:hover{
+                            cursor:pointer;
+                            background-color: #464746;
+                            color: white;
+                        }
+                        a.nav-link{
+                            padding: 0px;
+                        }
+                    </style>
+
+                    <div class="wrap" style="position: relative" data-bs-toggle="modal"
+                         data-bs-target="#popUpFormProfil">
                         <img src="{{asset('images/profile/angger.jpg')}}" alt="profil"
                              class="card-img-top rounded-circle"
-                             style="object-fit: cover; object-position: center; width: 150px; height: 150px; margin-left: 50%; transform: translate(-49%, 0%)">
+                             style="object-fit: cover; object-position: center; position: relative;width: 150px; height: 150px; margin-left: 50%; transform: translate(-49%, 0%)">
                     </div>
-                    <div class="modal-body">
-                        <table class="text-center" style="margin-left: 50%; transform: translate(-50%, 0%)">
+
+
+
+                    <div class="modal-body" style="padding-bottom: 40px">
+                        <table class="text-center" style="font-family:itc-avant-garde-gothic-std-book, serif;margin-left: 50%; transform: translate(-50%, 0%)">
                             <tr>
                                 <th>
                                     {{Auth::user()->name}}
@@ -85,38 +125,36 @@
                             <tr>
                                 <th>
 
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-light mb-2 mt-1" data-bs-toggle="modal"
-                                            data-bs-target="#popUpFormProfil">
-                                        Edit Profil
-                                    </button>
-
-
                                 </th>
                             </tr>
                         </table>
 
                     </div>
 
-                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3"
+                        style="font-family: itc-avant-garde-gothic-std-book, serif;font-size: 16px;color: #ffffff;">
                         <li class="nav-item">
-                            <a class="nav-link @if(isset($state)) @if($state==='transaksi') {{'active'}} @endif @endif" aria-current="page" href="/transaksi">Transaksi</a>
+                            <a class="nav-link @if(isset($state)) @if($state==='transaksi') {{'active'}} @endif @endif"
+                               aria-current="page" href="/transaksi">&nbsp&nbspTRANSAKSI</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @if(isset($state)) @if($state==='barang') {{'active'}} @endif @endif" href="/barang">Kelola Barang</a>
+                            <a class="nav-link @if(isset($state)) @if($state==='barang') {{'active'}} @endif @endif"
+                               href="/barang">&nbsp&nbspKELOLA BARANG</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @if(isset($state)) @if($state==='pegawai') {{'active'}} @endif @endif" href="/pegawai">Kelola Pegawai</a>
+                            <a class="nav-link @if(isset($state)) @if($state==='pegawai') {{'active'}} @endif @endif"
+                               href="/pegawai">&nbsp&nbspKELOLA PEGAWAI</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @if(isset($state)) @if($state==='keuangan') {{'active'}} @endif @endif" href="/keuangan">Laporan Keuangan</a>
+                            <a class="nav-link @if(isset($state)) @if($state==='keuangan') {{'active'}} @endif @endif"
+                               href="/keuangan">&nbsp&nbspLAPORAN KEUANGAN</a>
                         </li>
-                        <li class="nav-item">
+                        {{--<li class="nav-item">
                             <a class="nav-link @if(isset($state)) @if($state==='sandbox') {{'active'}} @endif @endif" href="/sandbox">Sandbox</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @if(isset($state)) @if($state==='test') {{'active'}} @endif @endif" href="/test">Test</a>
-                        </li>
+                        </li>--}}
                     </ul>
                     <!-- Modal -->
                     <div class="modalProfil">

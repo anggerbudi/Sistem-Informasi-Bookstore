@@ -24,24 +24,27 @@ Route::get('/', [DashboardController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 
-Route::get('/transaksi', [TransaksiController::class, 'index'])->middleware('auth');
-Route::post('/transaksi/belanja/{tgl}', [TransaksiController::class, 'baru'])->middleware('auth');
-Route::post('/transaksi/belanja/{tgl}/{url}', [TransaksiController::class, 'tambah'])->middleware('auth');
-Route::post('/transaksi/editJumlah/{tgl}/{url}/{kode}', [TransaksiController::class, 'editJumlah'])->middleware('auth');
-Route::post('/transaksi/hapus/{tgl}/{url}/{kode}', [TransaksiController::class, 'hapus'])->middleware('auth');
-Route::post('/transaksi/bayar/{tgl}/{url}', [TransaksiController::class, 'bayar'])->middleware('auth');
+    Route::resource('/transaksi', TransaksiController::class);
+    Route::post('/transaksi/belanja/baru/{tanggal}', [TransaksiController::class, 'baru']);
+    Route::post('/transaksi/belanja/tambah/{tanggal}/{url}', [TransaksiController::class, 'tambah']);
+    Route::post('/transaksi/belanja/jumlah/{tanggal}/{url}/{kode}', [TransaksiController::class, 'editJumlah']);
+    Route::post('/transaksi/belanja/hapus/{tanggal}/{url}/{kode}', [TransaksiController::class, 'hapus']);
+    Route::post('/transaksi/belanja/bayar/{tanggal}/{url}', [TransaksiController::class, 'bayar']);
 
-Route::get('/barang', [BarangController::class, 'index'])->middleware('auth');
-Route::post('/barang/stock{kode_barang}', [BarangController::class, 'stock'])->middleware('auth');
-Route::post('/barang/edit{kode_barang}', [BarangController::class, 'edit'])->middleware('auth');
-Route::post('/barang/hapus{kode_barang}', [BarangController::class, 'hapus'])->middleware('auth');
-Route::post('/barang/tambah', [BarangController::class, 'tambah'])->middleware('auth');
+    Route::resource('barang', BarangController::class);
+    Route::post('/barang/tambah', [BarangController::class, 'tambah']);
+    Route::post('/barang/stock/{barang}', [BarangController::class, 'stock']);
+    Route::post('/barang/edit/{barang}', [BarangController::class, 'edit']);
+    Route::post('/barang/hapus/{barang}', [BarangController::class, 'hapus']);
 
-Route::get('/pegawai', [PegawaiController::class, 'index'])->middleware('auth');
-Route::post('/pegawai/tambah', [PegawaiController::class, 'tambah'])->middleware('auth');
-Route::post('/pegawai/hapus{id}', [PegawaiController::class, 'hapus'])->middleware('auth');
-Route::post('/pegawai/edit{id}', [PegawaiController::class, 'edit_profil'])->middleware('auth');
+    Route::resource('pegawai', PegawaiController::class);
+    Route::post('/pegawai/hapus/{pegawai}', [PegawaiController::class, 'hapus']);
+    Route::post('/pegawai/edit/{pegawai}', [PegawaiController::class, 'edit_profil']);
 
-Route::get('/keuangan', [KeuanganController::class, 'index'])->middleware('auth');
+    Route::resource('keuangan', KeuanganController::class);
+    Route::post('/keuangan/detail/{id}', [KeuanganController::class, 'detail']);
+});
+

@@ -31,7 +31,7 @@ $uangBayar = intval(request('uang_bayar'));
                             aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formScanBarang" method="post" action="/transaksi/belanja/{{$tgl}}/{{$url}}">
+                    <form id="formScanBarang" method="post" action="/transaksi/belanja/tambah/{{$tgl}}/{{$url}}">
                         @csrf
                         <div class="mb-3">
                             <label for="nama_barang_input" class="form-label">Nama</label>
@@ -207,19 +207,31 @@ $uangBayar = intval(request('uang_bayar'));
                     <td>{{$item['nama_barang']}}</td>
                     <td>{{$item['harga_barang']}}</td>
                     <td>
-                        <form action="/transaksi/editJumlah/{{$tgl}}/{{$url}}/{{$item['kode_barang']}}" method="post">
+                        <form action="/transaksi/belanja/jumlah/{{$tgl}}/{{$url}}/{{$item['kode_barang']}}" method="post">
                             @csrf
                             <label for="edit_jumlah{{$item['kode_barang']}}"></label>
                             <input type="number" class="form-control" name="edit_jumlah{{$item['kode_barang']}}"
                                    id="edit_jumlah{{$item['kode_barang']}}" value="{{$item['jumlah_barang']}}"
-                                   style="width: 100px; display: inline-block">
-                            <input type="submit" value="Edit"
-                                   class="form-control" style="width: 50px; display: inline-block">
+                                   style="width: 100px; display: inline-block" min="0" max="{{$item['stock_barang']}}"
+                                   onkeydown="return event.keyCode !== 189" oninput="updateQuantity(this, {{$item['stock_barang']}})">
+                            <input type="submit" value="Edit" class="form-control" style="width: 50px; display: inline-block">
                         </form>
+
+                        <script>
+                            function updateQuantity(input, maxStock) {
+                                var quantity = parseInt(input.value);
+
+                                if (isNaN(quantity) || quantity < 0) {
+                                    input.value = 0;
+                                } else if (quantity > maxStock) {
+                                    input.value = maxStock;
+                                }
+                            }
+                        </script>
                     </td>
                     <td>{{$item['total_harga']}}</td>
                     <td>
-                        <form action="/transaksi/hapus/{{$tgl}}/{{$url}}/{{$item['kode_barang']}}" method="post">
+                        <form action="/transaksi/belanja/hapus/{{$tgl}}/{{$url}}/{{$item['kode_barang']}}" method="post">
                             @csrf
                             <input type="submit" value="Hapus" class="btn btn-danger">
                         </form>
@@ -259,7 +271,7 @@ $uangBayar = intval(request('uang_bayar'));
                             aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formBayar" method="post" action="/transaksi/bayar/{{$tgl}}/{{$url}}">
+                    <form id="formBayar" method="post" action="/transaksi/belanja/bayar/{{$tgl}}/{{$url}}">
                         @csrf
                         <div class="mb-3">
                             <label for="hargaTotal">Total Harga : </label>
@@ -285,8 +297,10 @@ $uangBayar = intval(request('uang_bayar'));
                     uangBayarInput.addEventListener('input', () => {
                         const nominal = uangBayarInput.value;
                         const hargaTotal = parseInt(document.getElementById('hargaTotal').value);
-
-                        if (nominal === '' || parseInt(nominal) < hargaTotal) {
+                        if(hargaTotal===0){
+                            bayarButton.disabled = true;
+                        }
+                        else if (nominal === '' || parseInt(nominal) < hargaTotal) {
                             bayarButton.disabled = true;
                             bayarButton.textContent = 'Uang Kurang';
                         } else {
@@ -316,31 +330,6 @@ $uangBayar = intval(request('uang_bayar'));
                         }
                     });
                 </script>
-
-                {{--<div class="modal-body">
-                    <form id="formBayar" method="post" action="/transaksi/bayar/{{$tgl}}/{{$url}}">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="hargaTotal">Total Harga : </label>
-                            <input type="number" name="hargaTotal" id="hargaTotal" class="form-control" readonly
-                                   value="{{$hargaTotal}}">
-                            <hr>
-                            <label for="uang_bayar"
-                                   class="form-label">Nominal</label>
-                            <input type="number" class="form-control"
-                                   id="uang_bayar"
-                                   name="uang_bayar"
-                                   placeholder="xxx">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
-                    </button>
-                    <button type="button" id="myButton" class="btn btn-warning" data-bs-toggle="modal"
-                    >Bayar
-                    </button>
-                </div>--}}
             </div>
         </div>
     </div>
@@ -379,7 +368,7 @@ $uangBayar = intval(request('uang_bayar'));
                             aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formKonfirmasi" method="post" action="/transaksi/bayar/{{$tgl}}/{{$url}}">
+                    <form id="formKonfirmasi" method="post" action="/transaksi/belanja/bayar/{{$tgl}}/{{$url}}">
                         @csrf
                         <label for="uang_pembayar">Uang Pembeli : </label>
                         <br>

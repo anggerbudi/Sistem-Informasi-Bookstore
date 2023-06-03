@@ -10,7 +10,7 @@
 
 {{--    <form action="{{route()}}"></form>--}}
 
-    <form action="/transaksi/belanja/{{now()->format('YmdHis')}}" method="post">
+    <form action="/transaksi/belanja/baru/{{now()->format('YmdHis')}}" method="post">
         @csrf
         <input type="submit" value="Buat Transaksi Baru">
     </form>

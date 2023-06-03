@@ -21,7 +21,7 @@ class PegawaiController extends Controller
 
     public function index()
     {
-        return view('pegawai', [
+        return view('pegawai.index', [
             'title' => 'Kelola Pegawai',
             'data' => User::where('akses', 'kasir')->get(),
             'state' => self::$state

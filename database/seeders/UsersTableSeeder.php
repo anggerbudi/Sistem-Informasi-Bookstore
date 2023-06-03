@@ -13,7 +13,7 @@ class UsersTableSeeder extends Seeder
             [
                 'id' => 50000,
                 'name' => 'Martinus Angger',
-                'email' => 'AnggerBudi@gmail.com',
+                'email' => 'anggerbudi@gmail.com',
                 'password' => bcrypt('Angger'),
                 'akses' => 'pemilik',
                 'foto' => 'angger',
@@ -21,10 +21,18 @@ class UsersTableSeeder extends Seeder
             [
                 'id' => 60000,
                 'name' => 'Antonius Yoga',
-                'email' => 'AntoniusYoga@gmail.com',
+                'email' => 'antoniusyoga@gmail.com',
                 'password' => bcrypt('Antonius'),
                 'akses' => 'pemilik',
                 'foto' => 'yoga',
+            ],
+            [
+                'id' => 70000,
+                'name' => 'Prischia Ballo',
+                'email' => 'prischiaballo@gmail.com',
+                'password' => bcrypt('Prischia'),
+                'akses' => 'pemilik',
+                'foto' => 'prischia',
             ]
         ]);
     }

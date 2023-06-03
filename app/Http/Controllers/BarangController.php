@@ -6,27 +6,29 @@ use App\Models\Barang;
 
 class BarangController extends Controller
 {
-    private static string $state;
-    private static string $title;
+    private string $state;
+    private string $title;
+    private Barang $barang;
 
-    public function __construct()
+    public function __construct(Barang $barang)
     {
-        self::$state = 'barang';
-        self::$title = 'Kelola Barang';
+        $this->title = 'Kelola Barang';
+        $this->state = 'barang';
+        $this->barang = $barang;
     }
 
     public function index()
     {
-        return view('barang', [
-            'title' => self::$title,
-            'state' => self::$state,
-            'data' => Barang::all(),
+        return view('barang.index', [
+            'title' => $this->title,
+            'state' => $this->state,
+            'data' => $this->barang->all(),
         ]);
     }
 
     public function edit($kode)
     {
-        Barang::where('kode_barang', '=', $kode)->update([
+        $this->barang->where('kode_barang', '=', $kode)->update([
             'nama_barang' => $_POST['nama_barang' . $kode],
             'harga_barang' => $_POST['harga_barang' . $kode],
         ]);

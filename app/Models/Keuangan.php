@@ -12,4 +12,8 @@ class Keuangan extends Model
         'bulan_laporan',
         'isi_laporan',
     ];
+
+    protected $attributes = [
+        'tahun_laporan' => ''
+    ];
 }

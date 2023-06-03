@@ -1,8 +1,21 @@
 @extends('layouts.main')
+<style>
+    .text-center {
+        font-family: itc-avant-garde-gothic-std-book, serif;
+        font-size: 20px;
+        color: #ffffff;
+        margin-top: 15px;
+    }
 
+    tr.ini{
+        background-color: #193333;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2);
+    }
+
+</style>
 @section('main')
 
-    <h1 class="text-center"> Halaman Kelola Pegawai</h1>
+    <p class="text-center"> HALAMAN KELOLA PEGAWAI</p>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-light" data-bs-toggle="modal"
             data-bs-target="#popUpTambahAkun">
@@ -62,15 +75,14 @@
     <div class="container">
         <table id="example" class="table table-striped" style="width:100%">
             <thead>
-            <tr>
+            <tr class="ini">
                 <th>ID</th>
                 <th>Nama</th>
                 <th>Email</th>
-                <th>Edit</th>
-                <th>Hapus</th>
+                <th>Action</th>
             </tr> <!-- Table Header -->
             </thead>
-            <tbody>
+            <tbody style="background-color: #214242">
             @foreach($data as $kasir)
                 <tr>
                     <td>{{$kasir['id']}}</td>
@@ -79,7 +91,7 @@
                     <td>
                         <button type="button" class="btn btn-light" data-bs-toggle="modal"
                                 data-bs-target="#popupFormStok{{$kasir['id']}}">
-                            Edit Akun
+                            <img src="{{asset('images/svg/pencil-square.svg')}}" alt="edit" width="20">
                         </button>
 
                         <!-- Modal -->
@@ -115,12 +127,11 @@
                                 </div>
                             </div>
                         </div>
-                    </td>
-                    <td>
+
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#popupFormHapusAkun{{$kasir['id']}}">
-                            Hapus Akun
+                            <img src="{{asset('images/svg/trash3-fill.svg')}}" alt="delete" width="20">
                         </button>
 
                         <!-- Modal -->
@@ -158,12 +169,11 @@
             @endforeach
             </tbody>
             <tfoot>
-            <tr>
+            <tr class="ini">
                 <th>ID</th>
                 <th>Nama</th>
                 <th>Email</th>
-                <th>Edit</th>
-                <th>Hapus</th>
+                <th>Action</th>
             </tr> <!-- Table Footer -->
             </tfoot>
         </table>

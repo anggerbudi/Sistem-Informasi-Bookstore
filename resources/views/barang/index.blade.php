@@ -1,29 +1,52 @@
 @extends('layouts.main')
 
 <style>
-    .text-center{
-        font-family: itc-avant-garde-gothic-std-book;
+    .text-center {
+        font-family: itc-avant-garde-gothic-std-book, serif;
         font-size: 20px;
-        color:white;
+        color: #ffffff;
         margin-top: 15px;
 
     }
 
-    tr{
-        background-color: black;
+    tr.ini {
+        background-color: #193333;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2);
     }
 
-    p{
-        font-family:itc-avant-garde-gothic-std-book;
+    p {
+        font-family: itc-avant-garde-gothic-std-book, serif;
     }
+
+    td {
+        vertical-align: middle;
+        border-left: 1px solid #000;
+        border-right: 1px solid #000;
+    }
+
+    td:first-child {
+        border-left: none;
+    }
+
+    td:last-child {
+        border-right: none;
+    }
+
+    /*input[type="number"], button {*/
+    /*    margin-bottom: 0px;*/
+    /*    padding: 6px;*/
+    /*    width: 100%;*/
+    /*    box-sizing: border-box;*/
+    /*}*/
+
+
 </style>
 
 @section('main')
     <p class="text-center"> HALAMAN KELOLA BARANG</p>
-    <!-- Button trigger modal -->
     <button type="button" class="btn btn-light" data-bs-toggle="modal"
             data-bs-target="#popUpTambahBarang">
-        <p>Tambah Barang</p>
+        Tambah Barang
     </button>
 
     <!-- Modal -->
@@ -32,7 +55,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="popupFormLabel{{--{{$item['kode_barang']}}--}}">
+                    <h5 class="modal-title" id="popupFormLabel">
                         Data Tambah Barang</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
@@ -40,7 +63,7 @@
                 <div class="modal-body">
                     <form id="formTambahBarang" method="post"
                           action="/barang/tambah">
-                        @csrf <!-- {{ csrf_field() }} -->
+                        @csrf
                         <div class="mb-3">
                             <label for="kode_barang_baru"
                                    class="form-label">Kode</label>
@@ -79,79 +102,46 @@
     <div class="container">
         <table id="example" class="table table-striped" style="width:100%">
             <thead>
-            <tr>
+            <tr class="ini">
                 <th>Kode</th>
                 <th>Nama</th>
                 <th>Harga</th>
                 <th>Stock</th>
-                <td>Edit Stock</td>
-                <th>Edit</th>
-                <th>Hapus</th>
-            </tr> <!-- Table Header -->
+                <th>Action</th>
+                <style>
+                    table {
+                        width: 100px;
+                        table-layout: fixed;
+                    }
+                </style>
+            </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: #214242">
             @foreach($data as $item)
-                <tr>
-                    <td>{{$item['kode_barang']}}</td>
-                    <td>{{$item['nama_barang']}}</td>
-                    <td>{{$item['harga_barang']}}</td>
-                    <td> {{$item['stock_barang']}}</td>
+                <tr><div></div>
+                    <td><div style="margin-top: -2px">{{$item['kode_barang']}}</div></td>
+                    <td><div style="margin-top: -2px">{{$item['nama_barang']}}</div></td>
+                    <td><div style="margin-top: -2px">{{$item['harga_barang']}}</div></td>
                     <td>
-                        <button type="button" class="btn btn-light" data-bs-toggle="modal"
-                                data-bs-target="#{{$item['kode_barang']}}">
-                            Edit Stock
-                        </button>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="{{$item['kode_barang']}}" tabindex="-1"
-                             aria-labelledby="popupFormLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="popupFormLabel">Edit
-                                            Stok {{$item['nama_barang']}}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="myForm1{{$item['kode_barang']}}" method="post"
-                                              action="/barang/stock{{$item['kode_barang']}}">
-                                            @csrf <!-- {{ csrf_field() }} -->
-                                            <div class="mb-3">
-                                                <label for="tambah{{$item['kode_barang']}}"
-                                                       class="form-label">Stock</label>
-                                                <input type="text" class="form-control"
-                                                       id="tambah{{$item['kode_barang']}}"
-                                                       name="tambah{{$item['kode_barang']}}"
-                                                       value="{{$item['stock_barang']}}">
-                                                <input type="button" class="mt-2" style="width: 2rem" id="plus"
-                                                       name="plus" value="+"
-                                                       onclick="increment({{$item['kode_barang']}})">
-                                                <input type="button" class="mt-2" style="width: 2rem" id="minus"
-                                                       name="minus" value="-"
-                                                       onclick="decrement({{$item['kode_barang']}})">
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
-                                        </button>
-                                        <button type="submit" form="myForm1{{$item['kode_barang']}}"
-                                                class="btn btn-primary">Submit
-                                        </button>
-                                    </div>
-                                </div>
+                        <form id="myForm1{{$item['kode_barang']}}" method="post"
+                              action="/barang/stock/{{$item['kode_barang']}}" class="m-auto">
+                            @csrf
+                            <div>
+                                <label for="tambah{{$item['kode_barang']}}"></label>
+                                <input type="number" class="form-control d-inline-block"
+                                       id="tambah{{$item['kode_barang']}}"
+                                       name="tambah{{$item['kode_barang']}}"
+                                       value="{{$item['stock_barang']}}" style="width: 100px">
+                                <input type="submit" value="Save" class="btn btn-dark" style="margin-top: -4px;">
                             </div>
-                        </div>
-                    </td> <!-- Tambah Stok Popup -->
+                        </form>
+                    </td>
                     <td>
-                        <!-- Button trigger modal -->
                         <button type="button" class="btn btn-light" data-bs-toggle="modal"
                                 data-bs-target="#popupFormStok{{$item['kode_barang']}}">
-                            Edit Barang
+                            <img src="{{asset('images/svg/pencil-square.svg')}}" alt="edit" width="20">
                         </button>
 
-                        <!-- Modal -->
                         <div class="modal fade" id="popupFormStok{{$item['kode_barang']}}" tabindex="-1"
                              aria-labelledby="popupFormLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -164,7 +154,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <form id="myForm2{{$item['kode_barang']}}" method="post"
-                                              action="/barang/edit{{$item['kode_barang']}}">
+                                              action="/barang/edit/{{$item['kode_barang']}}">
                                             @csrf <!-- {{ csrf_field() }} -->
                                             <div class="mb-3">
                                                 <label for="nama_barang{{$item['kode_barang']}}"
@@ -194,15 +184,11 @@
                             </div>
                         </div>
 
-                    </td> <!-- Edit Barang Popup -->
-                    <td>
-                        <!-- Button trigger modal -->
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#popupFormHapus{{$item['kode_barang']}}">
-                            Hapus Barang
+                            <img src="{{asset('images/svg/trash3-fill.svg')}}" alt="delete" width="20">
                         </button>
 
-                        <!-- Modal -->
                         <div class="modal fade" id="popupFormHapus{{$item['kode_barang']}}" tabindex="-1"
                              aria-labelledby="popupFormLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -215,8 +201,8 @@
                                     </div>
                                     <div class="modal-body">
                                         <form id="formHapusBarang{{$item['kode_barang']}}" method="post"
-                                              action="/barang/hapus{{$item['kode_barang']}}">
-                                            @csrf <!-- {{ csrf_field() }} -->
+                                              action="/barang/hapus/{{$item['kode_barang']}}">
+                                            @csrf
                                             <div class="mb-3">
                                                 Apakah anda yakin ingin hapus {{$item['nama_barang']}}
                                             </div>
@@ -237,31 +223,14 @@
             @endforeach
             </tbody>
             <tfoot>
-            <tr>
+            <tr class="ini">
                 <th>Kode</th>
                 <th>Nama</th>
                 <th>Harga</th>
-                <th colspan="2">Stock</th>
-                <th>Edit</th>
-                <th>Hapus</th>
-            </tr> <!-- Table Footer -->
+                <th>Stock</th>
+                <th>Action</th>
+            </tr>
             </tfoot>
         </table>
     </div>
-
-    <script>
-        function increment(kode) {
-            var id = 'tambah'.concat(kode);
-            var textField = document.getElementById(id);
-            var currentValue = parseInt(textField.value);
-            textField.value = currentValue + 1;
-        }
-
-        function decrement(kode) {
-            var id = 'tambah'.concat(kode);
-            var textField = document.getElementById(id);
-            var currentValue = parseInt(textField.value);
-            textField.value = currentValue - 1;
-        }
-    </script> <!-- JS for Stok -->
 @endsection

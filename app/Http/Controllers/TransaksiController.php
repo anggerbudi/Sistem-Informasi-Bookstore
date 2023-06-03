@@ -23,13 +23,14 @@ class TransaksiController extends Controller
     {
         self::$title = 'Transaksi';
         self::$state = 'transaksi';
-        self::$array_nama_barang = Barang::pluck('nama_barang')->all();
+//        self::$array_nama_barang = Barang::pluck('nama_barang')->where('stock_barang', '>', 0)->all();
+        self::$array_nama_barang = Barang::where('stock_barang', '>', 0)->pluck('nama_barang')->all();
         self::$database_data = Barang::all();
     }
 
     public function index()
     {
-        return view('transaksi', [
+        return view('transaksi.index', [
             'title' => self::$title,
             'state' => self::$state
         ]);
@@ -37,8 +38,8 @@ class TransaksiController extends Controller
 
     public function baru($tgl)
     {
-        $new_data = collect();
-        return view('belanja', [
+        $new_data = new Collection();
+        return view('transaksi.belanja', [
             'title' => self::$title,
             'state' => self::$state,
             'tgl' => $tgl,
@@ -52,7 +53,6 @@ class TransaksiController extends Controller
     {
         $barang = self::$database_data->firstWhere('nama_barang', $_POST['nama_barang_input']);
         $processed_data = collect(json_decode(Crypt::decryptString($data), true));
-
         if ($barang !== null) {
             if ($processed_data->where('nama_barang', $barang->nama_barang)->isEmpty()) {
                 $array_barang = [
@@ -61,6 +61,7 @@ class TransaksiController extends Controller
                     'harga_barang' => $barang->harga_barang,
                     'jumlah_barang' => 1,
                     'total_harga' => $barang->harga_barang * 1,
+                    'stock_barang' => $barang->stock_barang
                 ];
             } else {
                 $current_jumlah = $processed_data->firstWhere('nama_barang', $barang->nama_barang);
@@ -74,6 +75,7 @@ class TransaksiController extends Controller
                     'harga_barang' => $barang->harga_barang,
                     'jumlah_barang' => $new_jumlah,
                     'total_harga' => $barang->harga_barang * $new_jumlah,
+                    'stock_barang' => $barang->stock_barang
                 ];
             }
             $processed_data->push($array_barang);
@@ -81,7 +83,7 @@ class TransaksiController extends Controller
         } else {
             Session::flash('message', 'Pop-up message goes here');
         }
-        return view('belanja', [
+        return view('transaksi.belanja', [
             'title' => self::$title,
             'state' => self::$state,
             'tgl' => $tgl,
@@ -101,14 +103,28 @@ class TransaksiController extends Controller
             'harga_barang' => $barang['harga_barang'],
             'jumlah_barang' => $_POST['edit_jumlah' . $kode],
             'total_harga' => $barang['harga_barang'] * $_POST['edit_jumlah' . $kode],
+            'stock_barang' => $barang['stock_barang']
         ];
+        if($_POST['edit_jumlah' . $kode] === '0'){
+            $processed_data = $processed_data->reject(function ($item) use ($kode) {
+                return $item['kode_barang'] === $kode;
+            });
+            return view('transaksi.belanja', [
+                'title' => self::$title,
+                'state' => self::$state,
+                'tgl' => $tgl,
+                'url' => Crypt::encryptString(json_encode($processed_data)),
+                'data' => $processed_data,
+                'array_nama_barang' => self::$array_nama_barang,
+            ]);
+        }
 
         $processed_data = $processed_data->reject(function ($item) use ($barang) {
             return $item['nama_barang'] === $barang['nama_barang'];
         });
         $processed_data->push($barang_temp);
 
-        return view('belanja', [
+        return view('transaksi.belanja', [
             'title' => self::$title,
             'state' => self::$state,
             'tgl' => $tgl,
@@ -125,7 +141,7 @@ class TransaksiController extends Controller
             return $item['kode_barang'] === $kode;
         });
 
-        return view('belanja', [
+        return view('transaksi.belanja', [
             'title' => self::$title,
             'state' => self::$state,
             'tgl' => $tgl,
@@ -134,35 +150,6 @@ class TransaksiController extends Controller
             'array_nama_barang' => self::$array_nama_barang,
         ]);
     }
-
-
-//    public function bayar(Request $request, $tgl, $data)
-//    {
-//        $processed_data = json_decode(Crypt::decryptString($data), true);
-//
-//        $array_barang = array_column($processed_data, 'nama_barang');
-//        $array_harga = array_column($processed_data, 'harga_barang');
-//        $array_jumlah = array_column($processed_data, 'jumlah_barang');
-//
-//        foreach ($processed_data as $item) {
-//            $new_stock = Barang::where('nama_barang', $item['nama_barang'])->first()->stock_barang - $item['jumlah_barang'];
-//            Barang::where('nama_barang', $item['nama_barang'])->update([
-//                'stock_barang' => $new_stock,
-//            ]);
-//        }
-//        Transaksi::create([
-//            'id_transaksi' => $tgl,
-//            'nama_kasir' => Auth::user()->name,
-//            'daftar_barang' => json_encode($array_barang),
-//            'daftar_harga' => json_encode($array_harga),
-//            'daftar_jumlah' => json_encode($array_jumlah),
-//            'total_harga' => $request['total_harga'],
-//            'bayar' => $request['uang_pembayar'],
-//            'kembalian' => $request['uang_pembayar'] - $request['total_harga'],
-//        ]);
-//        return redirect('transaksi');
-//    }
-
 
     public function bayar(Request $request, $tgl, $data)
     {
@@ -196,7 +183,6 @@ class TransaksiController extends Controller
             'bayar' => $request['uang_pembayar'],
             'kembalian' => $request['uang_pembayar'] - $request['total_harga'],
         ]);
-
         return redirect('transaksi');
     }
 

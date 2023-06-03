@@ -25,3 +25,16 @@ return new class extends Migration {
         Schema::dropIfExists('transaksis');
     }
 };
+
+/*
+App\Models\Transaksi::create([
+    'id_transaksi' => ,
+    'nama_kasir' => ,
+    'daftar_barang' => ,
+    'daftar_harga' => ,
+    'daftar_jumlah' => ,
+    'total_harga' => ,
+    'bayar' => ,
+    'kembalian' =>
+])
+*/

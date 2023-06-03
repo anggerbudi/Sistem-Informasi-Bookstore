@@ -22,6 +22,7 @@
         <div class="container">
             <img src="images/logo.png" alt="" >
         </div>
+        <div class="footer"><h5 style="font-family:vogue, sans-serif;font-style:italic;font-stretch:100%;color:white;bottom:0px;position:absolute;left: 0; width: 100%; text-align: center;">WELCOME BACK {{Auth::user()->name}}</h5></div>
     @endauth
 
 @endsection
