@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Keuangan;
 use App\Models\Transaksi;
-use function PHPUnit\Framework\isEmpty;
 
 class KeuanganController extends Controller
 {
@@ -23,16 +22,14 @@ class KeuanganController extends Controller
 
     public function index()
     {
-        $current_date = now()->format('Y-m-d');
-        $current_month_data = $this->transaksi->whereDate('created_at', $current_date)->get();
-        $row = $this->keuangan->whereDate('created_at', $current_date)->get();
-
-        if ($row->isNotEmpty()) {
-            $this->keuangan->whereDate('created_at', $current_date)->update([
+        $current_date = now();
+        $current_month_data = $this->transaksi->whereMonth('created_at', $current_date->month)->get();
+        $row = $this->keuangan->where('bulan_laporan', now()->format('F'));
+        if ($row->first()->attributesToArray()['id_laporan'] != null) {
+            $row->update([
                 'isi_laporan' => json_encode($current_month_data),
             ]);
         } else {
-//            dd('baru');
             $this->keuangan->create([
                 'id_laporan' => now()->format('Ym'),
                 'tahun_laporan' => now()->format('Y'),
@@ -51,16 +48,12 @@ class KeuanganController extends Controller
 
     public function detail($id)
     {
+//        dd(json_decode($this->keuangan->firstWhere('id_laporan', $id)->isi_laporan)[5]->daftar_barang);
         return view('keuangan.detail', [
-           'title' => $this->title,
+           'title' => 'Detail Laporan',
             'state' => $this->state,
-            'data' => $this->keuangan->firstWhere('id_laporan', $id),
+            'data' => json_decode($this->keuangan->firstWhere('id_laporan', $id)->isi_laporan),
         ]);
-    }
-
-    public function show($id)
-    {
-
     }
 
 }

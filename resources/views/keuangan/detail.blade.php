@@ -1,124 +1,78 @@
 @extends('layouts.main')
 
+<style>
+    tr.ini {
+        background-color: #193333;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2);
+    }
+
+</style>
 @section('main')
 
     <p class="text-center"> HALAMAN KELOLA PEGAWAI</p>
 
     <div class="container">
-        <table id="example" class="table table-striped" style="width:100%">
+        <table id="items-table" class="table table-striped" style="width:100%">
             <thead>
             <tr class="ini">
-                <th></th>
                 <th>ID Transaksi</th>
                 <th>Nama Kasir</th>
-                <th>Daftar Barang</th>
-                <th>Daftar Harga</th>
-                <th>Daftar Jumlah</th>
+                <th colspan="3">Daftar Barang</th>
                 <th>Total Harga</th>
                 <th>Uang Pembeli</th>
-                <th>Nilai Kembalian</th>
+                <th>Uang Kembalian</th>
                 <th>Tanggal Dibuat</th>
             </tr>
             </thead>
-            <tbody></tbody>
+            <tbody style="background-color: #214242">
+            @foreach($data as $detail)
+                <tr>
+                    <td style="vertical-align: middle">{{$detail->id_transaksi}}</td>
+                    <td style="vertical-align: middle">{{$detail->nama_kasir}}</td>
+                    <td style="vertical-align: middle">
+                        <div style="padding: 5px">
+                        @foreach(json_decode($detail->daftar_barang) as $barang)
+                            {{$barang}}<br>
+                        @endforeach
+                        </div>
+                    </td>
+
+                    <td style="vertical-align: middle">
+                        <div style="padding: 5px">
+                        @foreach(json_decode($detail->daftar_harga) as $harga)
+                            @money($harga)<br>
+                        @endforeach
+                        </div>
+                    </td>
+                    <td style="vertical-align: middle">
+                        <div style="padding: 5px">
+                        @foreach(json_decode($detail->daftar_jumlah) as $jumlah)
+                            (×{{$jumlah}})<br>
+                        @endforeach
+                        </div>
+                    </td>
+                    <td style="vertical-align: middle">@money($detail->total_harga)</td>
+                    <td style="vertical-align: middle">@money($detail->bayar)</td>
+                    <td style="vertical-align: middle">@money($detail->kembalian)</td>
+                    <td style="vertical-align: middle">
+                        @tanggal($detail->created_at)
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
             <tfoot>
             <tr class="ini">
-                <th></th>
                 <th>ID Transaksi</th>
                 <th>Nama Kasir</th>
-                <th>Daftar Barang</th>
-                <th>Daftar Harga</th>
-                <th>Daftar Jumlah</th>
+                <th colspan="3">Daftar Barang</th>
                 <th>Total Harga</th>
                 <th>Uang Pembeli</th>
-                <th>Nilai Kembalian</th>
+                <th>Uang Kembalian</th>
                 <th>Tanggal Dibuat</th>
             </tr>
             </tfoot>
         </table>
     </div>
-
-    @push('scripts')
-        <script>
-            function format(d) {
-                return (
-                    'Full name: ' +
-                    d.first_name +
-                    ' ' +
-                    d.last_name +
-                    '<br>' +
-                    'Salary: ' +
-                    d.salary +
-                    '<br>' +
-                    'The child row can contain any data you wish, including links, images, inner tables etc.'
-                );
-            }
-
-            $(document).ready(function () {
-                var dt = $('#example').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ajax: {{asset('dataTables/test.json')}},
-                    columns: [
-                        {
-                            class: 'details-control',
-                            orderable: false,
-                            data: null,
-                            defaultContent: '',
-                        },
-                        { data: 'first_name' },
-                        { data: 'last_name' },
-                        { data: 'position' },
-                        { data: 'office' },
-                    ],
-                    order: [[1, 'asc']],
-                });
-
-                // Array to track the ids of the details displayed rows
-                var detailRows = [];
-
-                $('#example tbody').on('click', 'tr td.details-control', function () {
-                    var tr = $(this).closest('tr');
-                    var row = dt.row(tr);
-                    var idx = detailRows.indexOf(tr.attr('id'));
-
-                    if (row.child.isShown()) {
-                        tr.removeClass('details');
-                        row.child.hide();
-
-                        // Remove from the 'open' array
-                        detailRows.splice(idx, 1);
-                    } else {
-                        tr.addClass('details');
-                        row.child(format(row.data())).show();
-
-                        // Add to the 'open' array
-                        if (idx === -1) {
-                            detailRows.push(tr.attr('id'));
-                        }
-                    }
-                });
-
-                // On each draw, loop over the `detailRows` array and show any child rows
-                dt.on('draw', function () {
-                    detailRows.forEach(function(id, i) {
-                        $('#' + id + ' td.details-control').trigger('click');
-                    });
-                });
-            });
-        </script>
-
-        <style>
-            td.details-control {
-                background: url({{ asset('images/svg/plus-circle-fill.svg') }}) no-repeat center center;
-                cursor: pointer;
-            }
-
-            tr.details td.details-control {
-                background: url({{ asset('images/svg/dash-circle-fill.svg') }}) no-repeat center center;
-            }
-        </style>
-    @endpush
 
 @endsection
 

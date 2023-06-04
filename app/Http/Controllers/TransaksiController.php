@@ -186,5 +186,12 @@ class TransaksiController extends Controller
         return redirect('transaksi');
     }
 
+    public function daftar()
+    {
+        return view('transaksi.daftar', [
+            'title' => 'Riwayat Transaksi',
+            'data' => Transaksi::all()
+        ]);
+    }
 
 }

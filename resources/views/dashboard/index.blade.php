@@ -1,11 +1,47 @@
 @extends('layouts.main')
 <style>
-    .container img{
+    .container img {
         display: block;
         margin-left: auto;
         margin-right: auto;
         pointer-events: none;
     }
+
+    #footer {
+        left: 0px;
+        height: 80px;
+        position: absolute;
+        overflow: hidden;
+        background: #2f4f4f;
+        margin-left: auto;
+        margin-right: auto;
+
+    }
+
+    .contents {
+        width: 100%;
+        padding-top: 20px;
+        font-size: 15px;
+        white-space: nowrap;
+        text-transform: uppercase;
+        font-family: vogue, sans-serif;
+        font-weight: 300;
+        overflow: hidden;
+        padding-left: 50%;
+    }
+
+    .footerstyle {
+        display: inline-block;
+        -webkit-animation: scrolling-left1 20s linear infinite;
+        animation: scrolling-left1 7s linear infinite;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    @keyframes scrolling-left1 {
+
+    }
+
 </style>
 @section('main')
 
@@ -20,9 +56,10 @@
 
     @auth()
         <div class="container">
-            <img src="images/logo.png" alt="" >
+            <img src="{{asset('images/svg/Dashboard.svg')}}" alt="dashboard image" width="500px">
         </div>
-        <div class="footer"><h5 style="font-family:vogue, sans-serif;font-style:italic;font-stretch:100%;color:white;bottom:0px;position:absolute;left: 0; width: 100%; text-align: center;">WELCOME BACK {{Auth::user()->name}}</h5></div>
+        <div id="footer">
+            <p class="contents">
+                <span class="footerstyle">WELCOME BACK {{Auth::user()->name}}</h5></span></p></div>
     @endauth
-
 @endsection

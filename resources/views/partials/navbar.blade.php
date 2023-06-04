@@ -85,14 +85,20 @@
                             padding-top: 10px;
                             padding-bottom: 10px;
                             border-radius: 7px;
+                            color: white;
                         }
                         li.nav-item:hover{
                             cursor:pointer;
                             background-color: #464746;
-                            color: white;
+                            color: grey;
                         }
                         a.nav-link{
                             padding: 0px;
+                            color:white;
+                        }
+
+                        table.text-center{
+                            color: white;
                         }
                     </style>
 
@@ -118,15 +124,11 @@
                                 </th>
                             </tr>
                             <tr>
-                                <th>
+                                <th style="font-weight: normal;font-size: 16px">
                                     {{Auth::user()->email}}
                                 </th>
                             </tr>
-                            <tr>
-                                <th>
 
-                                </th>
-                            </tr>
                         </table>
 
                     </div>

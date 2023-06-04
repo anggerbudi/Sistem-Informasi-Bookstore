@@ -3,17 +3,34 @@
     $serial = now()
 
 ?>
+<style>
+    p {
+        font-family: itc-avant-garde-gothic-std-book, serif;
+        font-size: 20px;
+        color: #B2BEB5;
+        margin-top: 15px;
+    }
+    p.text-center{
+        margin-top: 50px;
+    }
+</style>
+
 
 @extends('layouts.main')
 
 @section('main')
+    <p class="text-center"> HALAMAN TRANSAKSI</p>
 
-{{--    <form action="{{route()}}"></form>--}}
+<form action="/transaksi/belanja/baru/{{now()->format('YmdHis')}}" method="post">
+    @csrf
+    <input type="submit" value="Buat Transaksi Baru" style="margin-left: 45%;margin-top: 20px;background-color: #193333">
+</form>
 
-    <form action="/transaksi/belanja/baru/{{now()->format('YmdHis')}}" method="post">
-        @csrf
-        <input type="submit" value="Buat Transaksi Baru">
-    </form>
+    <a href="/transaksi/riwayat" style="margin-left: 47%;margin-top: 20px">
+        <button>
+            Riwayat
+        </button>
+    </a>
 
     @if(1===2)
         <!-- Button trigger modal -->
@@ -28,14 +45,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="popupFormLabel{{--{{$item['id']}}--}}">
+                        <h5 class="modal-title" id="popupFormLabel">
                             ===================Judul Modal===================</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="formAPA" method="post" action="">
-                            @csrf <!-- {{ csrf_field() }} -->
+                            @csrf
                             <div class="mb-3">
                                 <label for="coba"
                                        class="form-label">cooba</label>

@@ -4,7 +4,7 @@
     .text-center {
         font-family: itc-avant-garde-gothic-std-book, serif;
         font-size: 20px;
-        color: #ffffff;
+        color: #B2BEB5;
         margin-top: 15px;
 
     }
@@ -138,8 +138,8 @@
                     </td>
                     <td>
                         <button type="button" class="btn btn-light" data-bs-toggle="modal"
-                                data-bs-target="#popupFormStok{{$item['kode_barang']}}">
-                            <img src="{{asset('images/svg/pencil-square.svg')}}" alt="edit" width="20">
+                                data-bs-target="#popupFormStok{{$item['kode_barang']}}" style="background-color:#212529;border-color:#212529">
+                            <img src="{{asset('images/svg/pencil-square.svg')}}" alt="edit" width="20" >
                         </button>
 
                         <div class="modal fade" id="popupFormStok{{$item['kode_barang']}}" tabindex="-1"

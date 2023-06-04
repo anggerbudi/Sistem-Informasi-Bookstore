@@ -26,6 +26,7 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/transaksi/riwayat', [TransaksiController::class, 'daftar']);
 
     Route::resource('/transaksi', TransaksiController::class);
     Route::post('/transaksi/belanja/baru/{tanggal}', [TransaksiController::class, 'baru']);

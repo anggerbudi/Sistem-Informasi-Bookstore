@@ -10,7 +10,20 @@ if (isset($url)) {
 }
 $uangBayar = intval(request('uang_bayar'));
 @endphp
+<style>
+    h1.text-center{
+        margin-top: 50px;
+        font-family: itc-avant-garde-gothic-std-book, serif;
+        font-size: 40px;
+        color: #B2BEB5;
+    }
+    h1{
 
+        font-family: itc-avant-garde-gothic-std-book, serif;
+        font-size: 20px;
+        color: #B2BEB5;
+    }
+</style>
 @section('main')
     <h1 class="text-center"> Transaksi - {{$tgl}}</h1>
     <!-- Button trigger modal -->

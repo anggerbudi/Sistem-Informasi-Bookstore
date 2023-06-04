@@ -1,8 +1,11 @@
 @extends('layouts.main')
 
+<style>
+
+</style>
 @section('main')
 
-    <h1 class="text-center">Halaman Laporan Keuangan</h1>
+    <h1 class="text-center">HALAMAN LAPORAN KEUANGAN</h1>
     <div class="container">
         <table id="example" class="table table-striped" style="width:100%">
             <thead>

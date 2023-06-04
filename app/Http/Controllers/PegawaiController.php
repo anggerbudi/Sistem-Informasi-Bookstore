@@ -6,7 +6,6 @@ use App\Models\User;
 use Auth;
 use Carbon\Carbon;
 use Hash;
-use Illuminate\Http\Request;
 
 class PegawaiController extends Controller
 {
