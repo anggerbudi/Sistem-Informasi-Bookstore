@@ -21,8 +21,7 @@
 @section('main')
     <p class="text-center"> HALAMAN TRANSAKSI</p>
 
-<form action="/transaksi/belanja/baru/{{now()->format('YmdHis')}}" method="post">
-    @csrf
+<form action="/transaksi/belanja/baru/{{now()->format('YmdHis')}}" method="get">
     <input type="submit" value="Buat Transaksi Baru" style="margin-left: 45%;margin-top: 20px;background-color: #193333">
 </form>
 

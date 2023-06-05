@@ -31,6 +31,9 @@
     td:last-child {
         border-right: none;
     }
+    button.btn btn-light:hover{
+        background-color:#2c3136;
+    }
 
     /*input[type="number"], button {*/
     /*    margin-bottom: 0px;*/
@@ -45,8 +48,8 @@
 @section('main')
     <p class="text-center"> HALAMAN KELOLA BARANG</p>
     <button type="button" class="btn btn-light" data-bs-toggle="modal"
-            data-bs-target="#popUpTambahBarang">
-        Tambah Barang
+            data-bs-target="#popUpTambahBarang" style="margin-left:70px;margin-bottom: 15px;background-color:#212529;border-color:#212529;color:#B2BEB5 ">
+        +Tambah Barang
     </button>
 
     <!-- Modal -->
@@ -108,6 +111,7 @@
                 <th>Harga</th>
                 <th>Stock</th>
                 <th>Action</th>
+                <th>Status</th>
                 <style>
                     table {
                         width: 100px;
@@ -118,10 +122,17 @@
             </thead>
             <tbody style="background-color: #214242">
             @foreach($data as $item)
-                <tr><div></div>
-                    <td><div style="margin-top: -2px">{{$item['kode_barang']}}</div></td>
-                    <td><div style="margin-top: -2px">{{$item['nama_barang']}}</div></td>
-                    <td><div style="margin-top: -2px">{{$item['harga_barang']}}</div></td>
+                <tr>
+                    <div></div>
+                    <td>
+                        <div style="margin-top: -2px">{{$item['kode_barang']}}</div>
+                    </td>
+                    <td>
+                        <div style="margin-top: -2px">{{$item['nama_barang']}}</div>
+                    </td>
+                    <td>
+                        <div style="margin-top: -2px">{{$item['harga_barang']}}</div>
+                    </td>
                     <td>
                         <form id="myForm1{{$item['kode_barang']}}" method="post"
                               action="/barang/stock/{{$item['kode_barang']}}" class="m-auto">
@@ -138,8 +149,9 @@
                     </td>
                     <td>
                         <button type="button" class="btn btn-light" data-bs-toggle="modal"
-                                data-bs-target="#popupFormStok{{$item['kode_barang']}}" style="background-color:#212529;border-color:#212529">
-                            <img src="{{asset('images/svg/pencil-square.svg')}}" alt="edit" width="20" >
+                                data-bs-target="#popupFormStok{{$item['kode_barang']}}"
+                                style="background-color:#212529;border-color:#212529">
+                            <img src="{{asset('images/svg/pencil-square.svg')}}" alt="edit" width="20">
                         </button>
 
                         <div class="modal fade" id="popupFormStok{{$item['kode_barang']}}" tabindex="-1"
@@ -155,7 +167,7 @@
                                     <div class="modal-body">
                                         <form id="myForm2{{$item['kode_barang']}}" method="post"
                                               action="/barang/edit/{{$item['kode_barang']}}">
-                                            @csrf <!-- {{ csrf_field() }} -->
+                                            @csrf
                                             <div class="mb-3">
                                                 <label for="nama_barang{{$item['kode_barang']}}"
                                                        class="form-label">Nama</label>
@@ -219,6 +231,17 @@
                             </div>
                         </div>
                     </td>
+                    <td wid>
+                        @if($item['stock_barang']>20)
+                            <button disabled class="btn btn-success" style="width: 100%">Aman</button>
+                        @endif
+                        @if($item['stock_barang']<=20 and $item['stock_barang']>0)
+                            <button disabled class="btn btn-warning" style="width: 100%">Warning</button>
+                        @endif
+                        @if($item['stock_barang']===0)
+                            <button disabled class="btn btn-danger" style="width: 100%">Habis</button>
+                        @endif
+                    </td>
                 </tr>
             @endforeach
             </tbody>
@@ -229,6 +252,7 @@
                 <th>Harga</th>
                 <th>Stock</th>
                 <th>Action</th>
+                <th>Status</th>
             </tr>
             </tfoot>
         </table>

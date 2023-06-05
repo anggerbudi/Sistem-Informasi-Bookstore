@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaksi/riwayat', [TransaksiController::class, 'daftar']);
 
     Route::resource('/transaksi', TransaksiController::class);
-    Route::post('/transaksi/belanja/baru/{tanggal}', [TransaksiController::class, 'baru']);
+    Route::get('/transaksi/belanja/baru/{tanggal}', [TransaksiController::class, 'baru']);
     Route::post('/transaksi/belanja/tambah/{tanggal}/{url}', [TransaksiController::class, 'tambah']);
     Route::post('/transaksi/belanja/jumlah/{tanggal}/{url}/{kode}', [TransaksiController::class, 'editJumlah']);
     Route::post('/transaksi/belanja/hapus/{tanggal}/{url}/{kode}', [TransaksiController::class, 'hapus']);
@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/barang/hapus/{barang}', [BarangController::class, 'hapus']);
 
     Route::resource('pegawai', PegawaiController::class);
+    Route::post('/pegawai/tambah', [PegawaiController::class, 'tambah']);
     Route::post('/pegawai/hapus/{pegawai}', [PegawaiController::class, 'hapus']);
     Route::post('/pegawai/edit/{pegawai}', [PegawaiController::class, 'edit_profil']);
 

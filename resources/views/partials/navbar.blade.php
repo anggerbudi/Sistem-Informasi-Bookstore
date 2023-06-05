@@ -1,6 +1,6 @@
 <nav class="navbar bg-body-tertiary fixed-top" style="background-color: #2f4f4f;box-shadow: 0 4px 8px 0 rgba(0,0,0,.2)">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/dashboard" style="margin-left:auto;margin-right:auto">
+        <a class="navbar-brand" href="/dashboard" style="margin-left:auto;margin-right:auto; padding-left: 40px">
             <h4 style="font-stretch:expanded;font-family: vogue,sans-serif;font-weight: 300">SISTEM INFORMASI TOKO BUKU
                 GULLIVER</h4>
         </a>
@@ -24,7 +24,8 @@
                                    value="Logout" alt="logout">
                         </form>
                     </div>
-                    <h5 class="offcanvas-title me-auto ms-auto" id="offcanvasNavbarLabel" style="font-family: itc-avant-garde-gothic-std-book, serif;color: white">PROFIL</h5>
+                    <h5 class="offcanvas-title me-auto ms-auto" id="offcanvasNavbarLabel"
+                        style="font-family: itc-avant-garde-gothic-std-book, serif;color: white">PROFIL</h5>
                 @endauth
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
@@ -62,7 +63,7 @@
                 @endguest
                 @auth()
                     <style>
-                        .wrap:after{
+                        .wrap:after {
                             font-family: 'Font Awesome 5 Free';
                             font-weight: 900;
                             content: "\f044";
@@ -78,26 +79,28 @@
                             align-items: center;
                             display: flex;
                             justify-content: center;
-                            cursor:pointer;
+                            cursor: pointer;
                         }
 
-                        li.nav-item{
+                        li.nav-item {
                             padding-top: 10px;
                             padding-bottom: 10px;
                             border-radius: 7px;
                             color: white;
                         }
-                        li.nav-item:hover{
-                            cursor:pointer;
+
+                        li.nav-item:hover {
+                            cursor: pointer;
                             background-color: #464746;
                             color: grey;
                         }
-                        a.nav-link{
+
+                        a.nav-link {
                             padding: 0px;
-                            color:white;
+                            color: white;
                         }
 
-                        table.text-center{
+                        table.text-center {
                             color: white;
                         }
                     </style>
@@ -112,7 +115,8 @@
 
 
                     <div class="modal-body" style="padding-bottom: 40px">
-                        <table class="text-center" style="font-family:itc-avant-garde-gothic-std-book, serif;margin-left: 50%; transform: translate(-50%, 0%)">
+                        <table class="text-center"
+                               style="font-family:itc-avant-garde-gothic-std-book, serif;margin-left: 50%; transform: translate(-50%, 0%)">
                             <tr>
                                 <th>
                                     {{Auth::user()->name}}
@@ -135,9 +139,25 @@
 
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3"
                         style="font-family: itc-avant-garde-gothic-std-book, serif;font-size: 16px;color: #ffffff;">
-                        <li class="nav-item">
-                            <a class="nav-link @if(isset($state)) @if($state==='transaksi') {{'active'}} @endif @endif"
-                               aria-current="page" href="/transaksi">&nbsp&nbspTRANSAKSI</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                &nbsp&nbspTRANSAKSI
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/transaksi">Menu Transaksi</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/transaksi/belanja/baru/{{now()->format('YmdHis')}}">Buat
+                                        Transaksi Baru</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="/transaksi/riwayat">Riwayat Transaksi</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @if(isset($state)) @if($state==='barang') {{'active'}} @endif @endif"

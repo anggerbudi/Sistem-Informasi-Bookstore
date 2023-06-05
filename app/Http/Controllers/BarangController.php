@@ -28,7 +28,7 @@ class BarangController extends Controller
 
     public function edit($kode)
     {
-        $this->barang->where('kode_barang', '=', $kode)->update([
+        $this->barang->where('kode_barang', $kode)->update([
             'nama_barang' => $_POST['nama_barang' . $kode],
             'harga_barang' => $_POST['harga_barang' . $kode],
         ]);
@@ -37,7 +37,7 @@ class BarangController extends Controller
 
     public function stock($kode)
     {
-        Barang::where('kode_barang', $kode)->update([
+        $this->barang->where('kode_barang', $kode)->update([
             'stock_barang' => $_POST['tambah' . $kode],
         ]);
         return redirect('barang');
@@ -45,7 +45,7 @@ class BarangController extends Controller
 
     public function tambah()
     {
-        Barang::create([
+        $this->barang->create([
             'kode_barang' => $_POST['kode_barang_baru'],
             'nama_barang' => $_POST['nama_barang_baru'],
             'harga_barang' => $_POST['harga_barang_baru'],
@@ -55,7 +55,7 @@ class BarangController extends Controller
 
     public function hapus($kode)
     {
-        Barang::where('kode_barang', $kode)->delete();
+        $this->barang->where('kode_barang', $kode)->delete();
         return redirect('barang');
     }
 

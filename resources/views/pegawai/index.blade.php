@@ -3,7 +3,7 @@
     .text-center {
         font-family: itc-avant-garde-gothic-std-book, serif;
         font-size: 20px;
-        color: #ffffff;
+        color: #B2BEB5;
         margin-top: 15px;
     }
 
@@ -18,8 +18,8 @@
     <p class="text-center"> HALAMAN KELOLA PEGAWAI</p>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-light" data-bs-toggle="modal"
-            data-bs-target="#popUpTambahAkun">
-        Tambah Akun
+            data-bs-target="#popUpTambahAkun" style="margin-left:70px;margin-bottom: 15px;background-color:#212529;border-color:#212529;color:#B2BEB5 ">
+       + Tambah Akun
     </button>
 
     <!-- Modal -->
@@ -28,7 +28,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="popupFormLabel{{--{{$item['id']}}--}}">
+                    <h5 class="modal-title" id="popupFormLabel">
                         Data Tambah Barang</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
@@ -36,7 +36,7 @@
                 <div class="modal-body">
                     <form id="formTambahAkun" method="post"
                           action="/pegawai/tambah">
-                        @csrf <!-- {{ csrf_field() }} -->
+                        @csrf
                         <div class="mb-3">
                             <label for="name_akun"
                                    class="form-label">Nama</label>
@@ -90,7 +90,8 @@
                     <td>{{$kasir['email']}}</td>
                     <td>
                         <button type="button" class="btn btn-light" data-bs-toggle="modal"
-                                data-bs-target="#popupFormStok{{$kasir['id']}}">
+                                data-bs-target="#popupFormStok{{$kasir['id']}}"
+                                style="background-color:#212529;border-color:#212529">
                             <img src="{{asset('images/svg/pencil-square.svg')}}" alt="edit" width="20">
                         </button>
 
@@ -108,7 +109,7 @@
                                     <div class="modal-body">
                                         <form id="formEditAkun{{$kasir['id']}}" method="post"
                                               action="/pegawai/edit/{{$kasir['id']}}">
-                                            @csrf <!-- {{ csrf_field() }} -->
+                                            @csrf
                                             <div class="mb-3">
                                                 <label for="nama{{$kasir['id']}}" class="form-label">Nama</label>
                                                 <input type="text" class="form-control"

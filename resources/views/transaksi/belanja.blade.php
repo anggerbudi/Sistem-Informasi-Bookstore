@@ -1,31 +1,38 @@
 @extends('layouts.main')
 
 @php
-$hargaTotal = 0;
-if (isset($url)) {
-    $currentData = json_decode(Crypt::decryptString($url));
-    foreach ($currentData as $harga) {
-        $hargaTotal += $harga->harga_barang * $harga->jumlah_barang;
+    $hargaTotal = 0;
+    if (isset($url)) {
+        $currentData = json_decode(Crypt::decryptString($url));
+        foreach ($currentData as $harga) {
+            $hargaTotal += $harga->harga_barang * $harga->jumlah_barang;
+        }
     }
-}
-$uangBayar = intval(request('uang_bayar'));
+    $uangBayar = intval(request('uang_bayar'));
 @endphp
 <style>
-    h1.text-center{
+    h1.text-center {
         margin-top: 50px;
         font-family: itc-avant-garde-gothic-std-book, serif;
-        font-size: 40px;
+        font-size: 20px;
         color: #B2BEB5;
     }
-    h1{
+
+    h1 {
 
         font-family: itc-avant-garde-gothic-std-book, serif;
         font-size: 20px;
         color: #B2BEB5;
     }
+
+    tr.ini {
+        background-color: #193333;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2);
+    }
+
 </style>
 @section('main')
-    <h1 class="text-center"> Transaksi - {{$tgl}}</h1>
+    <h1 class="text-center"> TRANSAKSI - {{$tgl}}</h1>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-light" data-bs-toggle="modal"
             data-bs-target="#popUpScanBarang" style="transform: translate(80%, 0%); margin-bottom: 20px;">
@@ -48,7 +55,8 @@ $uangBayar = intval(request('uang_bayar'));
                         @csrf
                         <div class="mb-3">
                             <label for="nama_barang_input" class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="nama_barang_input" name="nama_barang_input" placeholder="xxx">
+                            <input type="text" class="form-control" id="nama_barang_input" name="nama_barang_input"
+                                   placeholder="xxx">
                             <ul id="suggestions" class=""></ul>
                             <style>
                                 li:hover {
@@ -60,7 +68,9 @@ $uangBayar = intval(request('uang_bayar'));
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" form="formScanBarang" id="buttonFormScan" class="btn btn-warning" disabled>Submit</button>
+                    <button type="submit" form="formScanBarang" id="buttonFormScan" class="btn btn-warning" disabled>
+                        Submit
+                    </button>
                 </div>
 
                 <script>
@@ -121,34 +131,6 @@ $uangBayar = intval(request('uang_bayar'));
                         document.getElementById('formScanBarang').submit();
                     }
                 </script>
-
-                {{--<div class="modal-body">
-                    <form id="formScanBarang" method="post"
-                          action="/transaksi/belanja/{{$tgl}}/{{$url}}">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="nama_barang_input"
-                                   class="form-label">Nama</label>
-                            <input type="text" class="form-control"
-                                   id="nama_barang_input"
-                                   name="nama_barang_input"
-                                   placeholder="xxx">
-                            <ul id="suggestions" class=""></ul>
-                            <style>
-                                li:hover {
-                                    background-color: gray;
-                                }
-                            </style>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
-                    </button>
-                    <button type="submit" form="formScanBarang" id="buttonFormScan"
-                    class="btn btn-warning">Submit
-                    </button>
-                </div>--}}
                 <script>
                     const nama_barang_input = document.getElementById('nama_barang_input');
                     const suggestionList = document.getElementById('suggestions');
@@ -204,7 +186,7 @@ $uangBayar = intval(request('uang_bayar'));
     <div class="container">
         <table id="example" class="table table-striped" style="width:100%">
             <thead>
-            <tr>
+            <tr class="ini">
                 <th>ID</th>
                 <th>Nama</th>
                 <th>Harga</th>
@@ -213,21 +195,24 @@ $uangBayar = intval(request('uang_bayar'));
                 <th>Hapus</th>
             </tr> <!-- Table Header -->
             </thead>
-            <tbody>
+            <tbody style="background-color: #214242">
             @foreach($data as $item)
                 <tr>
                     <td>{{$item['kode_barang']}}</td>
                     <td>{{$item['nama_barang']}}</td>
                     <td>{{$item['harga_barang']}}</td>
                     <td>
-                        <form action="/transaksi/belanja/jumlah/{{$tgl}}/{{$url}}/{{$item['kode_barang']}}" method="post">
+                        <form action="/transaksi/belanja/jumlah/{{$tgl}}/{{$url}}/{{$item['kode_barang']}}"
+                              method="post">
                             @csrf
                             <label for="edit_jumlah{{$item['kode_barang']}}"></label>
                             <input type="number" class="form-control" name="edit_jumlah{{$item['kode_barang']}}"
                                    id="edit_jumlah{{$item['kode_barang']}}" value="{{$item['jumlah_barang']}}"
                                    style="width: 100px; display: inline-block" min="0" max="{{$item['stock_barang']}}"
-                                   onkeydown="return event.keyCode !== 189" oninput="updateQuantity(this, {{$item['stock_barang']}})">
-                            <input type="submit" value="Edit" class="form-control" style="width: 50px; display: inline-block">
+                                   onkeydown="return event.keyCode !== 189"
+                                   oninput="updateQuantity(this, {{$item['stock_barang']}})">
+                            <input type="submit" value="Edit" class="form-control"
+                                   style="width: 50px; display: inline-block">
                         </form>
 
                         <script>
@@ -244,7 +229,8 @@ $uangBayar = intval(request('uang_bayar'));
                     </td>
                     <td>{{$item['total_harga']}}</td>
                     <td>
-                        <form action="/transaksi/belanja/hapus/{{$tgl}}/{{$url}}/{{$item['kode_barang']}}" method="post">
+                        <form action="/transaksi/belanja/hapus/{{$tgl}}/{{$url}}/{{$item['kode_barang']}}"
+                              method="post">
                             @csrf
                             <input type="submit" value="Hapus" class="btn btn-danger">
                         </form>
@@ -253,7 +239,7 @@ $uangBayar = intval(request('uang_bayar'));
             @endforeach
             </tbody>
             <tfoot>
-            <tr>
+            <tr class="ini">
                 <th>ID</th>
                 <th>Nama</th>
                 <th>Harga</th>
@@ -292,7 +278,8 @@ $uangBayar = intval(request('uang_bayar'));
                                    value="{{$hargaTotal}}">
                             <hr>
                             <label for="uang_bayar" class="form-label">Nominal</label>
-                            <input type="number" class="form-control" id="uang_bayar" name="uang_bayar" placeholder="xxx">
+                            <input type="number" class="form-control" id="uang_bayar" name="uang_bayar"
+                                   placeholder="xxx">
                         </div>
                     </form>
                 </div>
@@ -310,10 +297,9 @@ $uangBayar = intval(request('uang_bayar'));
                     uangBayarInput.addEventListener('input', () => {
                         const nominal = uangBayarInput.value;
                         const hargaTotal = parseInt(document.getElementById('hargaTotal').value);
-                        if(hargaTotal===0){
+                        if (hargaTotal === 0) {
                             bayarButton.disabled = true;
-                        }
-                        else if (nominal === '' || parseInt(nominal) < hargaTotal) {
+                        } else if (nominal === '' || parseInt(nominal) < hargaTotal) {
                             bayarButton.disabled = true;
                             bayarButton.textContent = 'Uang Kurang';
                         } else {

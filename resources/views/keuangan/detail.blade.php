@@ -5,11 +5,17 @@
         background-color: #193333;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2);
     }
+    p.text-center{
+        font-family: itc-avant-garde-gothic-std-book, serif;
+        font-size: 20px;
+        color: #B2BEB5;
+        margin-top: 15px;
+    }
 
 </style>
 @section('main')
 
-    <p class="text-center"> HALAMAN KELOLA PEGAWAI</p>
+    <p class="text-center"> DETAIL LAPORAN Bulan {{$data->bulan_laporan}} Tahun {{$data->tahun_laporan}}</p>
 
     <div class="container">
         <table id="items-table" class="table table-striped" style="width:100%">
@@ -25,7 +31,7 @@
             </tr>
             </thead>
             <tbody style="background-color: #214242">
-            @foreach($data as $detail)
+            @foreach(json_decode($data->isi_laporan) as $detail)
                 <tr>
                     <td style="vertical-align: middle">{{$detail->id_transaksi}}</td>
                     <td style="vertical-align: middle">{{$detail->nama_kasir}}</td>

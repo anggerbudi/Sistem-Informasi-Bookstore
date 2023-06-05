@@ -48,11 +48,11 @@ class KeuanganController extends Controller
 
     public function detail($id)
     {
-//        dd(json_decode($this->keuangan->firstWhere('id_laporan', $id)->isi_laporan)[5]->daftar_barang);
         return view('keuangan.detail', [
-           'title' => 'Detail Laporan',
+            'title' => 'Detail Laporan',
             'state' => $this->state,
-            'data' => json_decode($this->keuangan->firstWhere('id_laporan', $id)->isi_laporan),
+//            'data' => json_decode($this->keuangan->firstWhere('id_laporan', $id)->isi_laporan),
+            'data' => $this->keuangan->firstWhere('id_laporan', $id),
         ]);
     }
 

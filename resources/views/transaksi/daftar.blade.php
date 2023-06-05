@@ -6,12 +6,11 @@
         color: #B2BEB5;
     }
     tr.ini {
-        margin-top: 20%;
         background-color: #193333;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2);
     }
     p.text-center{
-        margin-top: 50px;
+        margin-top: 15px;
     }
 
 </style>
